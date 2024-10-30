@@ -1,6 +1,6 @@
 # User Management API
 
-Esta es una API RESTful de gestión de usuarios desarrollada con FastAPI y una base de datos MySQL. La API permite realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) sobre un modelo de usuario.
+Esta es una API RESTful de gestión de usuarios desarrollada con FastAPI y una base de datos MySQL. La API permite realizar operaciones CRUD sobre un modelo de usuario.
 
 ## Características
 
