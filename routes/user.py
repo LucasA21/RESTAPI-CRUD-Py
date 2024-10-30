@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Response
+from fastapi import APIRouter, Response, status
 from models.user import users
 from config.db import conn
 from schemas.user import User
@@ -13,13 +13,13 @@ f = Fernet(key)
 
 user = APIRouter()
 
-@user.get("/users")
+@user.get("/users", response_model=list[User])
 def get_users():
     result =  conn.execute(users.select()).fetchall()
     users_list = [dict(row._mapping) for row in result]
     return jsonable_encoder(users_list)
 
-@user.post("/users")
+@user.post("/users", response_model=User)
 def create_user(user : User):
     new_user = {"name": user.name, "email": user.email}
     new_user["password"] = f.encrypt(user.password.encode("utf-8"))
@@ -28,18 +28,18 @@ def create_user(user : User):
     created_user = conn.execute(users.select().where(users.c.id == result.lastrowid)).first()
     return jsonable_encoder(dict(created_user._mapping)) if created_user else None
 
-@user.get("/users/{id}")
+@user.get("/users/{id}",response_model=User)
 def get_user(id:str):
     user = conn.execute(users.select().where(users.c.id == id)).first()
     return jsonable_encoder(dict(user._mapping)) if user else None
 
-@user.delete("/users/{id}")
+@user.delete("/users/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_user(id:str):
     conn.execute(users.delete().where(users.c.id == id))
     conn.commit()
     return Response(status_code=HTTP_204_NO_CONTENT)
 
-@user.put("/users/{id}")
+@user.put("/users/{id}", response_model=User)
 def update_user(id:str, user : User):
     conn.execute(users.update().values(name = user.name, email = user.email, 
                                        password = f.encrypt(user.password.encode("utf-8"))).where(users.c.id == id))
