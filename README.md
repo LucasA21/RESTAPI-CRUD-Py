@@ -64,7 +64,7 @@ Esta es una API RESTful de gestión de usuarios desarrollada con FastAPI y una b
 ## Endpoints principales
 
 - `GET /users` - Obtener todos los usuarios.
-- `POST /users` - Crear un nuevo usuario.
+- `POST /users` - Crear un nuevo usuario
 - `GET /users/{id}` - Obtener un usuario por su ID.
 - `PUT /users/{id}` - Actualizar un usuario existente.
 - `DELETE /users/{id}` - Eliminar un usuario por su ID.
